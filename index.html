@@ -1,0 +1,1052 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#11151b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Evil Nature">
+<title>Ficha Evil Nature</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Special+Elite&display=swap">
+<style>
+/* Layout: dossiê de caso em uma coluna só, feito pro celular. Seções separadas por filetes, rótulos de formulário em mono, títulos em máquina de escrever. Visual único e escuro de propósito: jogo de horror, mesa à noite. */
+:root {
+  --bg: #11151b;
+  --surface: #181e26;
+  --surface-2: #202833;
+  --line: #2e3946;
+  --fg: #e8e4da;
+  --muted: #98a0aa;
+  --accent: #e0902f;
+  --accent-fg: #1a1208;
+  --danger: #d1584a;
+  --danger-bg: #351d1b;
+  --ok: #78b387;
+  --display: 'Special Elite', 'Courier New', monospace;
+  --body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 64px;
+}
+.wrap { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+.wrap > * { min-width: 0; }
+
+h1 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 12vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.kicker { font: 500 0.75rem/1 var(--mono); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+.status { display: flex; gap: 8px; align-items: flex-start; font: 400 0.75rem/1.5 var(--mono); color: var(--muted); margin: 16px 0 0; }
+.status::before { content: ""; width: 8px; height: 8px; margin-top: 5px; border-radius: 50%; background: var(--ok); flex: none; }
+.status.warn { color: var(--danger); }
+.status.warn::before { background: var(--danger); }
+
+section { display: flex; flex-direction: column; gap: 16px; }
+h2 { display: flex; align-items: center; gap: 12px; margin: 0; font: 500 0.75rem/1 var(--mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.hint { margin: 0; color: var(--muted); font-size: 0.875rem; }
+.meta { margin: 0; font: 400 0.8rem/1.4 var(--mono); color: var(--muted); }
+.meta b { color: var(--fg); font-weight: 500; }
+
+.lab { display: block; font: 500 0.7rem/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+input[type="text"], textarea {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  border-radius: 6px;
+  padding: 12px;
+  font: inherit;
+  font-size: 16px;
+  min-height: 48px;
+}
+textarea { resize: vertical; min-height: 96px; }
+input::placeholder, textarea::placeholder { color: #66707c; }
+input:disabled { opacity: 0.5; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn { min-height: 48px; padding: 0 18px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface-2); font-weight: 500; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); font-weight: 600; }
+.btn.danger { background: var(--danger-bg); border-color: var(--danger); color: #f0b8b0; }
+.btn.ghost { background: transparent; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; }
+.linkbtn { background: none; border: 0; padding: 8px 0; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; font-size: 0.875rem; }
+
+.chip { min-height: 44px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); font-size: 0.9rem; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); font-weight: 600; }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* identidade */
+.ident { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 16px; align-items: start; }
+.photo { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.photo-box {
+  position: relative; display: flex; align-items: center; justify-content: center; text-align: center;
+  width: 116px; aspect-ratio: 4 / 5; max-width: 100%;
+  background: var(--surface); border: 1px dashed #4a5766; border-radius: 6px; overflow: hidden; cursor: pointer;
+  font: 500 0.7rem/1.4 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 8px;
+}
+.photo-box img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.photo-box.has { border-style: solid; border-color: var(--line); }
+.fields { display: flex; flex-direction: column; gap: 16px; }
+
+/* atributos */
+.attr { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.attr-name { font-family: var(--display); font-size: 1.5rem; }
+.stepper { display: flex; align-items: center; gap: 6px; }
+.step { width: 48px; height: 48px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface-2); font-size: 1.5rem; line-height: 1; }
+.val { width: 44px; text-align: center; font-family: var(--display); font-size: 2.25rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.defense { display: flex; align-items: baseline; gap: 14px; padding-top: 4px; }
+.defense b { font-family: var(--display); font-weight: 400; font-size: 2.75rem; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+.defense span { font: 400 0.8rem/1.4 var(--mono); color: var(--muted); }
+
+/* perícias */
+.rollbar { display: flex; flex-direction: column; gap: 14px; padding: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+.rollbar .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.rollbar .lab { margin-bottom: 8px; }
+.skills { list-style: none; margin: 0; padding: 0; }
+.skill { display: grid; grid-template-columns: minmax(0, 1fr) auto 48px; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.sname { font-weight: 500; overflow-wrap: anywhere; }
+.tier { min-width: 118px; min-height: 44px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; background: transparent; color: var(--muted); font: 500 0.78rem/1 var(--mono); }
+.tier.t2 { background: var(--surface-2); border-color: var(--accent); color: var(--fg); }
+.tier.t3 { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+.roll { width: 48px; min-height: 44px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface-2); font: 500 0.8rem/1 var(--mono); }
+.result { grid-column: 1 / -1; display: grid; gap: 4px; margin: 4px 0 8px; padding: 12px 14px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; }
+.result .total { font-family: var(--display); font-size: 2.4rem; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+.result .calc { font: 400 0.8rem/1.5 var(--mono); color: var(--muted); }
+.result .verdict { font-weight: 600; }
+.result .ok { color: var(--ok); }
+.result .bad { color: var(--danger); }
+
+/* especialidade */
+.spec { display: block; width: 100%; text-align: left; padding: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+.spec + .spec { margin-top: 10px; }
+.spec .sn { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; font-family: var(--display); font-size: 1.25rem; }
+.spec .sn i { font: 500 0.7rem/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-style: normal; }
+.spec .st { display: block; font: 500 0.7rem/1.4 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 2px 0 8px; }
+.spec .sd { display: block; font-size: 0.95rem; color: var(--fg); }
+.spec[aria-pressed="true"] { background: var(--surface-2); border-color: var(--accent); }
+
+/* equipamentos e condições */
+.slot { display: flex; flex-direction: column; gap: 8px; }
+.slot .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.conds { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.cond { display: flex; align-items: center; gap: 4px; padding: 0 4px 0 14px; min-height: 44px; background: var(--danger-bg); border: 1px solid var(--danger); border-radius: 6px; }
+.cond .x { width: 40px; height: 40px; background: none; border: 0; font-size: 1.4rem; line-height: 1; color: #f0b8b0; }
+.addrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; }
+.incap { margin: 0; padding: 12px 14px; border: 1px solid var(--danger); background: var(--danger-bg); border-radius: 6px; color: #f0b8b0; font-weight: 600; }
+
+/* dano */
+.dmg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.dmg .btn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; padding: 10px 12px; min-height: 56px; }
+.dmg .btn small { font: 400 0.72rem/1.2 var(--mono); color: var(--muted); }
+.dmg .btn:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+/* exportação */
+.sheet-img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; }
+.out { display: flex; flex-direction: column; gap: 12px; }
+.msg { margin: 0; min-height: 1.2em; font-size: 0.875rem; color: var(--muted); }
+.confirm { display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid var(--danger); background: var(--danger-bg); border-radius: 6px; }
+.confirm p { margin: 0; font-size: 0.95rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .step:active, .roll:active, .btn:active, .chip:active, .tier:active { transform: translateY(1px); }
+}
+@media (max-width: 380px) {
+  .ident { grid-template-columns: 100px minmax(0, 1fr); }
+  .photo-box { width: 100px; }
+  .tier { min-width: 100px; font-size: 0.72rem; }
+}
+</style>
+
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <p class="kicker">Ficha de caçador</p>
+    <h1>Evil Nature</h1>
+    <p class="status" id="saveStatus" role="status">Tudo é salvo sozinho neste aparelho.</p>
+  </header>
+
+  <section aria-labelledby="h-ident">
+    <h2 id="h-ident">Identidade</h2>
+    <div class="ident">
+      <div class="photo">
+        <label class="photo-box" for="photoInput" id="photoBox">
+          <img id="photoImg" alt="Foto do personagem" hidden>
+          <span id="photoHint">Toque pra adicionar foto</span>
+        </label>
+        <input class="sr" type="file" id="photoInput" accept="image/*">
+        <button type="button" class="linkbtn" id="photoRemove" hidden>Remover foto</button>
+      </div>
+      <div class="fields">
+        <div>
+          <label class="lab" for="fName">Nome do caçador</label>
+          <input type="text" id="fName" autocomplete="off" autocapitalize="words" maxlength="60">
+        </div>
+        <div>
+          <label class="lab" for="fPlayer">Jogador(a)</label>
+          <input type="text" id="fPlayer" autocomplete="off" autocapitalize="words" maxlength="60">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-attr">
+    <h2 id="h-attr">Atributos</h2>
+    <p class="meta" id="pool"></p>
+    <div id="attrs"></div>
+    <div class="defense" aria-live="polite"><b id="defVal">12</b><span id="defCalc">Defesa = 12 + Corpo</span></div>
+  </section>
+
+  <section aria-labelledby="h-skills">
+    <h2 id="h-skills">Perícias</h2>
+    <p class="meta" id="skillCount"></p>
+    <p class="hint">Toque no botão de treino para alternar entre sem treino, básica (+2) e principal (+3). O botão d20 rola 1d20 + atributo + perícia.</p>
+    <div class="rollbar" id="rollbar"></div>
+    <ul class="skills" id="skills"></ul>
+  </section>
+
+  <section aria-labelledby="h-spec">
+    <h2 id="h-spec">Especialidade</h2>
+    <div id="specs"></div>
+  </section>
+
+  <section aria-labelledby="h-traits">
+    <h2 id="h-traits">Vínculos, medos e fraquezas</h2>
+    <div>
+      <label class="lab" for="fBond1">Vínculo 1</label>
+      <input type="text" id="fBond1" autocomplete="off" placeholder="Uma relação importante, dentro ou fora do grupo" maxlength="140">
+    </div>
+    <div>
+      <label class="lab" for="fBond2">Vínculo 2 (opcional)</label>
+      <input type="text" id="fBond2" autocomplete="off" maxlength="140">
+    </div>
+    <div>
+      <label class="lab" for="fFears">Medos e fraquezas</label>
+      <textarea id="fFears" maxlength="400" placeholder="Limitações humanas que enriquecem a interpretação"></textarea>
+    </div>
+    <p class="hint">Combinem na mesa o que cada um aceita jogar, para ninguém passar por desconforto real.</p>
+  </section>
+
+  <section aria-labelledby="h-eq">
+    <h2 id="h-eq">Equipamentos</h2>
+    <div class="slot">
+      <span class="lab">Slot 1 · Armamento principal</span>
+      <div class="chips" id="slot1Type"></div>
+      <input type="text" id="fSlot1" autocomplete="off" maxlength="120" aria-label="Descrição do armamento principal">
+    </div>
+    <div class="slot">
+      <label class="lab" for="fSlot2">Slot 2 · Item pessoal</label>
+      <input type="text" id="fSlot2" autocomplete="off" maxlength="120" placeholder="Objeto com valor emocional (não dá bônus)">
+    </div>
+    <div class="slot">
+      <label class="lab" for="fSlot3">Slot 3 · Item de preparação</label>
+      <input type="text" id="fSlot3" autocomplete="off" maxlength="120" list="prepList" placeholder="Escolhido antes da missão">
+      <datalist id="prepList">
+        <option value="Sal grosso"></option>
+        <option value="Lanterna"></option>
+        <option value="Kit médico"></option>
+        <option value="Giz"></option>
+        <option value="Espelho"></option>
+        <option value="Ferro frio"></option>
+      </datalist>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-cond">
+    <h2 id="h-cond">Condições</h2>
+    <p class="meta"><b id="condCount">0 de 3</b> · cada condição aplica −2 nas rolagens relacionadas</p>
+    <ul class="conds" id="condList"></ul>
+    <p class="incap" id="incap" hidden>Incapacitado. Precisa de socorro.</p>
+    <div class="addrow">
+      <input type="text" id="condInput" autocomplete="off" maxlength="40" placeholder="Ex.: Sangrando, Atordoado, Abalado" aria-label="Nova condição">
+      <button type="button" class="btn" id="condAdd">Adicionar</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-dmg">
+    <h2 id="h-dmg">Dados de dano</h2>
+    <div class="dmg" id="dmgBtns"></div>
+    <div class="result" id="dmgResult" hidden></div>
+  </section>
+
+  <section aria-labelledby="h-save">
+    <h2 id="h-save">Guardar e compartilhar</h2>
+    <p class="hint">A ficha e a foto ficam salvas neste aparelho, neste navegador. Se trocar de aparelho ou limpar os dados do navegador, elas somem. Gere a imagem para guardar uma cópia com a foto e mandar pro Mestre.</p>
+    <div class="row">
+      <button type="button" class="btn primary" id="genBtn">Gerar imagem da ficha</button>
+      <button type="button" class="btn" id="copyBtn">Copiar resumo em texto</button>
+    </div>
+    <p class="msg" id="exportMsg" role="status"></p>
+    <textarea id="summaryBox" readonly hidden aria-label="Resumo da ficha em texto"></textarea>
+    <div class="out" id="sheetOut" hidden>
+      <img class="sheet-img" id="sheetImg" alt="Imagem da ficha completa">
+      <p class="hint">No celular, segure o dedo sobre a imagem e escolha salvar nas fotos.</p>
+      <div class="row"><button type="button" class="btn" id="saveImgBtn" hidden>Salvar imagem</button></div>
+    </div>
+    <div>
+      <button type="button" class="linkbtn" id="resetBtn">Começar uma ficha nova</button>
+    </div>
+    <div class="confirm" id="resetConfirm" hidden>
+      <p>Isso apaga a ficha e a foto deste aparelho. Não dá pra desfazer.</p>
+      <div class="row">
+        <button type="button" class="btn danger" id="resetYes">Apagar tudo</button>
+        <button type="button" class="btn ghost" id="resetNo">Cancelar</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var POOL = 4, MAXATTR = 3, MAXBASIC = 4, MAXMAIN = 2, MAXCOND = 3;
+  var KEY = 'evilnature:ficha:v1', PKEY = 'evilnature:foto:v1';
+
+  var ATTRS = [
+    { id: 'corpo', name: 'Corpo' },
+    { id: 'mente', name: 'Mente' },
+    { id: 'presenca', name: 'Presença' }
+  ];
+  var SKILLS = [
+    { id: 'investigacao', name: 'Investigação' },
+    { id: 'ocultismo', name: 'Ocultismo' },
+    { id: 'percepcao', name: 'Percepção' },
+    { id: 'medicina', name: 'Medicina' },
+    { id: 'tecnologia', name: 'Tecnologia' },
+    { id: 'sobrevivencia', name: 'Sobrevivência' },
+    { id: 'furtividade', name: 'Furtividade' },
+    { id: 'luta', name: 'Luta' },
+    { id: 'pontaria', name: 'Pontaria' },
+    { id: 'persuasao', name: 'Persuasão' },
+    { id: 'intimidacao', name: 'Intimidação' },
+    { id: 'enganacao', name: 'Enganação' }
+  ];
+  var SPECS = [
+    { id: 'veterano', name: 'Veterano', tag: 'Instinto de Caçador',
+      text: '1x por investigação, pode fazer uma pergunta direta ao Mestre sobre os hábitos ou o padrão de ataque da criatura, com base em sua experiência passada.' },
+    { id: 'ocultista', name: 'Ocultista', tag: 'Conhecimento Proibido',
+      text: '1x por investigação, ao encontrar rituais ou objetos amaldiçoados, identifica sua origem ou propósito básico sem precisar rolar dados.' },
+    { id: 'investigador', name: 'Investigador', tag: 'Ligando os Pontos',
+      text: '1x por investigação, pode rolar o dado novamente se falhar ao examinar uma cena de crime ou interrogar uma testemunha.' },
+    { id: 'sobrevivente', name: 'Sobrevivente', tag: 'Improviso Rápido',
+      text: 'Transforma objetos comuns do cenário em ferramentas úteis ou armas improvisadas de emergência, ganhando +1 em Investigação para encontrar objetos úteis.' }
+  ];
+  var DAMAGE = [
+    { id: 'desarmado', name: 'Ataque desarmado', die: 4, note: 'Ineficaz contra monstros físicos.' },
+    { id: 'sal', name: 'Bala de sal', die: 4, note: 'Aplica automaticamente Atordoado em espíritos e criaturas sensíveis.' },
+    { id: 'comum', name: 'Munição comum', die: 6, note: 'Em monstros sem fraqueza, só atrasa ou desequilibra.' },
+    { id: 'lamina', name: 'Lâmina especializada', die: 6, note: 'Fere criaturas vulneráveis ao material.' },
+    { id: 'prata', name: 'Bala de prata', die: 8, note: 'Alto impacto contra criaturas vulneráveis à prata.' }
+  ];
+
+  function $(id) { return document.getElementById(id); }
+  function str(v) { return typeof v === 'string' ? v : ''; }
+  function el(tag, attrs) {
+    var n = document.createElement(tag);
+    if (attrs) {
+      Object.keys(attrs).forEach(function (k) {
+        var v = attrs[k];
+        if (v == null || v === false) return;
+        if (k === 'class') n.className = v;
+        else if (k === 'text') n.textContent = v;
+        else if (k.slice(0, 2) === 'on') n.addEventListener(k.slice(2), v);
+        else if (v === true) n.setAttribute(k, '');
+        else n.setAttribute(k, v);
+      });
+    }
+    for (var i = 2; i < arguments.length; i++) {
+      var kids = [].concat(arguments[i]);
+      for (var j = 0; j < kids.length; j++) {
+        var kid = kids[j];
+        if (kid == null || kid === false) continue;
+        n.appendChild(kid.nodeType ? kid : document.createTextNode(String(kid)));
+      }
+    }
+    return n;
+  }
+  function d(n) {
+    try {
+      var b = new Uint32Array(1);
+      crypto.getRandomValues(b);
+      return 1 + (b[0] % n);
+    } catch (e) {
+      return 1 + Math.floor(Math.random() * n);
+    }
+  }
+  function signed(n) { return (n < 0 ? '−' : '+') + Math.abs(n); }
+
+  /* estado */
+  function blank() {
+    return {
+      name: '', player: '',
+      attrs: { corpo: 0, mente: 0, presenca: 0 },
+      skills: {}, spec: '',
+      bonds: ['', ''], fears: '',
+      slot1: { type: '', desc: '' }, slot2: '', slot3: '',
+      conditions: []
+    };
+  }
+  function merge(b, p) {
+    if (!p || typeof p !== 'object') return b;
+    b.name = str(p.name); b.player = str(p.player);
+    ATTRS.forEach(function (a) {
+      var v = p.attrs ? Number(p.attrs[a.id]) : 0;
+      b.attrs[a.id] = isFinite(v) ? Math.max(0, Math.min(MAXATTR, Math.round(v))) : 0;
+    });
+    if (p.skills && typeof p.skills === 'object') {
+      SKILLS.forEach(function (s) {
+        var v = Number(p.skills[s.id]);
+        if (v === 2 || v === 3) b.skills[s.id] = v;
+      });
+    }
+    b.spec = SPECS.some(function (s) { return s.id === p.spec; }) ? p.spec : '';
+    if (Array.isArray(p.bonds)) b.bonds = [str(p.bonds[0]), str(p.bonds[1])];
+    b.fears = str(p.fears);
+    if (p.slot1) {
+      b.slot1.type = (p.slot1.type === 'fogo' || p.slot1.type === 'branca') ? p.slot1.type : '';
+      b.slot1.desc = str(p.slot1.desc);
+    }
+    b.slot2 = str(p.slot2); b.slot3 = str(p.slot3);
+    if (Array.isArray(p.conditions)) b.conditions = p.conditions.map(str).filter(Boolean).slice(0, MAXCOND);
+    return b;
+  }
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) return merge(blank(), JSON.parse(raw));
+    } catch (e) {}
+    return blank();
+  }
+  function loadPhoto() {
+    try { return localStorage.getItem(PKEY) || ''; } catch (e) { return ''; }
+  }
+
+  var state = load();
+  var photo = loadPhoto();
+  var ui = { attr: 'mente', dt: 15, cond: false, roll: null, dmg: null };
+  var downloads = null;
+  var sheetBlob = null;
+  var saveTimer = null;
+  var storageOk = true;
+
+  /* salvar */
+  function setStatus() {
+    var s = $('saveStatus');
+    if (storageOk) {
+      s.textContent = 'Tudo é salvo sozinho neste aparelho.';
+      s.className = 'status';
+    } else {
+      s.textContent = 'Este navegador não está guardando dados. Gere a imagem da ficha no fim da página para não perder nada.';
+      s.className = 'status warn';
+    }
+  }
+  function save() {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(state));
+      storageOk = true;
+    } catch (e) {
+      storageOk = false;
+    }
+    setStatus();
+  }
+  function savePhoto() {
+    try {
+      if (photo) localStorage.setItem(PKEY, photo);
+      else localStorage.removeItem(PKEY);
+    } catch (e) {
+      storageOk = false;
+      setStatus();
+    }
+  }
+  function changed() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(save, 250);
+    if (!$('sheetOut').hidden) {
+      $('sheetOut').hidden = true;
+      $('sheetImg').removeAttribute('src');
+      sheetBlob = null;
+      $('exportMsg').textContent = 'A ficha mudou. Gere a imagem de novo.';
+    }
+  }
+  function flush() { clearTimeout(saveTimer); save(); }
+  window.addEventListener('pagehide', flush);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') flush();
+  });
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
+
+  /* campos de texto */
+  var BINDS = [
+    ['fName', function () { return state.name; }, function (v) { state.name = v; }],
+    ['fPlayer', function () { return state.player; }, function (v) { state.player = v; }],
+    ['fBond1', function () { return state.bonds[0]; }, function (v) { state.bonds[0] = v; }],
+    ['fBond2', function () { return state.bonds[1]; }, function (v) { state.bonds[1] = v; }],
+    ['fFears', function () { return state.fears; }, function (v) { state.fears = v; }],
+    ['fSlot1', function () { return state.slot1.desc; }, function (v) { state.slot1.desc = v; }],
+    ['fSlot2', function () { return state.slot2; }, function (v) { state.slot2 = v; }],
+    ['fSlot3', function () { return state.slot3; }, function (v) { state.slot3 = v; }]
+  ];
+  function bindFields() {
+    BINDS.forEach(function (b) {
+      var node = $(b[0]);
+      node.value = b[1]();
+      node.addEventListener('input', function () { b[2](node.value); changed(); });
+    });
+  }
+  function fillFields() {
+    BINDS.forEach(function (b) { $(b[0]).value = b[1](); });
+  }
+
+  /* foto */
+  function renderPhoto() {
+    var img = $('photoImg');
+    if (photo) {
+      img.src = photo; img.hidden = false;
+      $('photoHint').hidden = true;
+      $('photoBox').classList.add('has');
+      $('photoRemove').hidden = false;
+    } else {
+      img.removeAttribute('src'); img.hidden = true;
+      $('photoHint').hidden = false;
+      $('photoBox').classList.remove('has');
+      $('photoRemove').hidden = true;
+    }
+  }
+  function fileToPhoto(file) {
+    return new Promise(function (resolve, reject) {
+      var fr = new FileReader();
+      fr.onload = function () {
+        var img = new Image();
+        img.onload = function () {
+          var tw = 400, th = 500;
+          var c = document.createElement('canvas');
+          c.width = tw; c.height = th;
+          var x = c.getContext('2d');
+          var r = Math.max(tw / img.width, th / img.height);
+          var w = img.width * r, h = img.height * r;
+          x.fillStyle = '#000'; x.fillRect(0, 0, tw, th);
+          x.drawImage(img, (tw - w) / 2, (th - h) / 2, w, h);
+          resolve(c.toDataURL('image/jpeg', 0.85));
+        };
+        img.onerror = reject;
+        img.src = fr.result;
+      };
+      fr.onerror = reject;
+      fr.readAsDataURL(file);
+    });
+  }
+  $('photoInput').addEventListener('change', function (e) {
+    var f = e.target.files && e.target.files[0];
+    if (!f) return;
+    fileToPhoto(f).then(function (url) {
+      photo = url; savePhoto(); renderPhoto(); changed();
+    }).catch(function () {
+      $('exportMsg').textContent = 'Não consegui ler essa foto. Tente outra imagem.';
+    });
+    e.target.value = '';
+  });
+  $('photoRemove').addEventListener('click', function () {
+    photo = ''; savePhoto(); renderPhoto(); changed();
+  });
+
+  /* atributos */
+  function attrTotal() {
+    return ATTRS.reduce(function (s, a) { return s + state.attrs[a.id]; }, 0);
+  }
+  function renderAttrs() {
+    var rem = POOL - attrTotal();
+    $('pool').innerHTML = '';
+    $('pool').appendChild(el('b', { text: String(Math.max(rem, 0)) }));
+    $('pool').appendChild(document.createTextNode(' de ' + POOL + ' pontos para distribuir · máximo ' + MAXATTR + ' em cada'));
+    var box = $('attrs');
+    box.replaceChildren.apply(box, ATTRS.map(function (a) {
+      var v = state.attrs[a.id];
+      return el('div', { class: 'attr' },
+        el('span', { class: 'attr-name', text: a.name }),
+        el('div', { class: 'stepper' },
+          el('button', { type: 'button', class: 'step', 'aria-label': 'Diminuir ' + a.name, disabled: v <= 0, onclick: function () { state.attrs[a.id] = v - 1; afterAttr(); } }, '−'),
+          el('span', { class: 'val', 'aria-live': 'polite', text: String(v) }),
+          el('button', { type: 'button', class: 'step', 'aria-label': 'Aumentar ' + a.name, disabled: v >= MAXATTR || rem <= 0, onclick: function () { state.attrs[a.id] = v + 1; afterAttr(); } }, '+')
+        )
+      );
+    }));
+    $('defVal').textContent = String(12 + state.attrs.corpo);
+    $('defCalc').textContent = 'Defesa = 12 + Corpo (' + state.attrs.corpo + ')';
+  }
+  function afterAttr() { ui.roll = null; renderAttrs(); renderSkills(); changed(); }
+
+  /* perícias */
+  function countTier(t) {
+    return SKILLS.filter(function (s) { return state.skills[s.id] === t; }).length;
+  }
+  function nextTier(id) {
+    var cur = state.skills[id] || 0;
+    var b = countTier(2), m = countTier(3);
+    if (cur === 0) { if (b < MAXBASIC) return 2; if (m < MAXMAIN) return 3; return 0; }
+    if (cur === 2) { if (m < MAXMAIN) return 3; return 0; }
+    return 0;
+  }
+  function chip(label, on, fn) {
+    return el('button', { type: 'button', class: 'chip', 'aria-pressed': String(!!on), onclick: fn }, label);
+  }
+  function renderRollbar() {
+    var box = $('rollbar');
+    function group(label, chips) {
+      return el('div', null, el('span', { class: 'lab', text: label }), el('div', { class: 'chips' }, chips));
+    }
+    var dts = [[10, 'Fácil 10'], [15, 'Média 15'], [20, 'Difícil 20'], [0, 'Sem DT']];
+    box.replaceChildren(
+      group('Atributo do teste', ATTRS.map(function (a) {
+        return chip(a.name + ' ' + state.attrs[a.id], ui.attr === a.id, function () { ui.attr = a.id; ui.roll = null; renderRollbar(); renderSkills(); });
+      })),
+      group('Dificuldade', dts.map(function (p) {
+        return chip(p[1], ui.dt === p[0], function () { ui.dt = p[0]; ui.roll = null; renderRollbar(); renderSkills(); });
+      })),
+      group('Condições', [chip('−2 por condição', ui.cond, function () { ui.cond = !ui.cond; ui.roll = null; renderRollbar(); renderSkills(); })])
+    );
+  }
+  function rollSkill(id) {
+    var s = SKILLS.filter(function (x) { return x.id === id; })[0];
+    var a = ATTRS.filter(function (x) { return x.id === ui.attr; })[0];
+    var die = d(20), av = state.attrs[a.id], tv = state.skills[id] || 0, pen = ui.cond ? -2 : 0;
+    ui.roll = { skill: id, sname: s.name, aname: a.name, die: die, av: av, tv: tv, pen: pen, total: die + av + tv + pen, dt: ui.dt };
+    renderSkills();
+  }
+  function resultNode(r) {
+    var calc = 'd20 ' + r.die + ' + ' + r.aname + ' ' + r.av;
+    calc += r.tv ? ' + ' + r.sname + ' ' + r.tv : ' (sem treino em ' + r.sname + ')';
+    if (r.pen) calc += ' − 2 (condição)';
+    calc += ' = ' + r.total;
+    var kids = [
+      el('span', { class: 'total', text: String(r.total) }),
+      el('span', { class: 'calc', text: calc })
+    ];
+    if (r.dt) {
+      var pass = r.total >= r.dt;
+      kids.push(el('span', { class: 'verdict ' + (pass ? 'ok' : 'bad'), text: 'DT ' + r.dt + ': ' + (pass ? 'passou' : 'não passou') }));
+    }
+    return el('div', { class: 'result', role: 'status' }, kids);
+  }
+  function renderSkills() {
+    var b = countTier(2), m = countTier(3);
+    $('skillCount').innerHTML = '';
+    $('skillCount').appendChild(el('b', { text: b + ' de ' + MAXBASIC }));
+    $('skillCount').appendChild(document.createTextNode(' básicas (+2) · '));
+    $('skillCount').appendChild(el('b', { text: m + ' de ' + MAXMAIN }));
+    $('skillCount').appendChild(document.createTextNode(' principais (+3)'));
+    var list = $('skills');
+    list.replaceChildren.apply(list, SKILLS.map(function (s) {
+      var t = state.skills[s.id] || 0;
+      var label = t === 3 ? 'Principal +3' : t === 2 ? 'Básica +2' : 'Sem treino';
+      var kids = [
+        el('span', { class: 'sname', text: s.name }),
+        el('button', { type: 'button', class: 'tier t' + t, 'aria-label': s.name + ': ' + label + '. Toque para mudar.', onclick: function () {
+          var n = nextTier(s.id);
+          if (n) state.skills[s.id] = n; else delete state.skills[s.id];
+          ui.roll = null; renderSkills(); changed();
+        } }, label),
+        el('button', { type: 'button', class: 'roll', 'aria-label': 'Rolar ' + s.name, onclick: function () { rollSkill(s.id); } }, 'd20')
+      ];
+      if (ui.roll && ui.roll.skill === s.id) kids.push(resultNode(ui.roll));
+      return el('li', { class: 'skill' }, kids);
+    }));
+  }
+
+  /* especialidade */
+  function renderSpecs() {
+    var box = $('specs');
+    box.replaceChildren.apply(box, SPECS.map(function (s) {
+      var on = state.spec === s.id;
+      return el('button', { type: 'button', class: 'spec', 'aria-pressed': String(on), onclick: function () {
+        state.spec = on ? '' : s.id; renderSpecs(); changed();
+      } },
+        el('span', { class: 'sn' }, el('span', { text: s.name }), on ? el('i', { text: 'Escolhida' }) : null),
+        el('span', { class: 'st', text: s.tag }),
+        el('span', { class: 'sd', text: s.text })
+      );
+    }));
+  }
+
+  /* equipamentos */
+  function renderEquip() {
+    var types = [['fogo', 'Arma de fogo'], ['branca', 'Arma branca especializada']];
+    var box = $('slot1Type');
+    box.replaceChildren.apply(box, types.map(function (t) {
+      return chip(t[1], state.slot1.type === t[0], function () {
+        state.slot1.type = state.slot1.type === t[0] ? '' : t[0]; renderEquip(); changed();
+      });
+    }));
+    var ph = state.slot1.type === 'fogo' ? 'Ex.: revólver calibre .38 (ataques à distância)'
+      : state.slot1.type === 'branca' ? 'Ex.: lâmina de ferro frio, contra um tipo de monstro'
+      : 'Escolha acima: arma de fogo OU arma branca especializada';
+    $('fSlot1').placeholder = ph;
+  }
+
+  /* condições */
+  function renderConds() {
+    var n = state.conditions.length;
+    $('condCount').textContent = n + ' de ' + MAXCOND;
+    var list = $('condList');
+    list.replaceChildren.apply(list, state.conditions.map(function (c, i) {
+      return el('li', { class: 'cond' },
+        el('span', { text: c }),
+        el('button', { type: 'button', class: 'x', 'aria-label': 'Remover condição ' + c, onclick: function () {
+          state.conditions.splice(i, 1); renderConds(); changed();
+        } }, '×')
+      );
+    }));
+    $('incap').hidden = n < MAXCOND;
+    $('condAdd').disabled = n >= MAXCOND;
+    $('condInput').disabled = n >= MAXCOND;
+  }
+  function addCond() {
+    var v = $('condInput').value.trim();
+    if (!v || state.conditions.length >= MAXCOND) return;
+    state.conditions.push(v);
+    $('condInput').value = '';
+    renderConds(); changed();
+  }
+  $('condAdd').addEventListener('click', addCond);
+  $('condInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); addCond(); }
+  });
+
+  /* dano */
+  function renderDamage() {
+    var box = $('dmgBtns');
+    box.replaceChildren.apply(box, DAMAGE.map(function (x) {
+      return el('button', { type: 'button', class: 'btn', onclick: function () {
+        var v = d(x.die);
+        var impact = v <= 3 ? ['Impacto leve', 'condição leve ou passageira']
+          : v <= 6 ? ['Impacto grave', 'condição séria que atrapalha ações']
+          : ['Impacto crítico', 'dano severo ou derruba alvo debilitado'];
+        ui.dmg = { name: x.name, die: x.die, v: v, impact: impact, note: x.note };
+        showDamage();
+      } }, el('span', { text: x.name }), el('small', { text: '1d' + x.die }));
+    }));
+  }
+  function showDamage() {
+    var r = ui.dmg, box = $('dmgResult');
+    if (!r) { box.hidden = true; return; }
+    box.replaceChildren(
+      el('span', { class: 'total', text: String(r.v) }),
+      el('span', { class: 'calc', text: r.name + ' · 1d' + r.die + ' = ' + r.v }),
+      el('span', { class: 'verdict', text: r.impact[0] + ': ' + r.impact[1] }),
+      el('span', { class: 'calc', text: r.note })
+    );
+    box.hidden = false;
+  }
+
+  /* resumo em texto */
+  function summaryText() {
+    var a = state.attrs, L = [];
+    var mains = SKILLS.filter(function (s) { return state.skills[s.id] === 3; }).map(function (s) { return s.name; });
+    var basics = SKILLS.filter(function (s) { return state.skills[s.id] === 2; }).map(function (s) { return s.name; });
+    var sp = SPECS.filter(function (s) { return s.id === state.spec; })[0];
+    var s1 = state.slot1.type === 'fogo' ? 'Arma de fogo' : state.slot1.type === 'branca' ? 'Arma branca especializada' : 'Armamento principal';
+    L.push('EVIL NATURE · Ficha de caçador');
+    L.push('Nome: ' + (state.name || '—'));
+    L.push('Jogador(a): ' + (state.player || '—'));
+    L.push('Corpo ' + a.corpo + ' · Mente ' + a.mente + ' · Presença ' + a.presenca + ' · Defesa ' + (12 + a.corpo));
+    L.push('Perícias principais (+3): ' + (mains.join(', ') || '—'));
+    L.push('Perícias básicas (+2): ' + (basics.join(', ') || '—'));
+    L.push('Especialidade: ' + (sp ? sp.name + ' (' + sp.tag + ')' : '—'));
+    L.push('Vínculos: ' + (state.bonds.filter(Boolean).join(' / ') || '—'));
+    L.push('Medos e fraquezas: ' + (state.fears || '—'));
+    L.push(s1 + ': ' + (state.slot1.desc || '—'));
+    L.push('Item pessoal: ' + (state.slot2 || '—'));
+    L.push('Item de preparação: ' + (state.slot3 || '—'));
+    L.push('Condições: ' + (state.conditions.join(', ') || 'nenhuma') + (state.conditions.length >= MAXCOND ? ' (incapacitado)' : ''));
+    return L.join('\n');
+  }
+  function showMsg(t) { $('exportMsg').textContent = t; }
+  $('copyBtn').addEventListener('click', function () {
+    var text = summaryText(), box = $('summaryBox');
+    function fallback() {
+      box.value = text; box.hidden = false;
+      box.rows = 12; box.focus(); box.select();
+      try { box.setSelectionRange(0, text.length); } catch (e) {}
+      showMsg('Selecione o texto acima e copie.');
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () {
+        box.hidden = true; showMsg('Resumo copiado.');
+      }, fallback);
+    } catch (e) { fallback(); }
+  });
+
+  /* imagem da ficha */
+  var C = { bg: '#11151b', surface: '#181e26', line: '#2e3946', fg: '#e8e4da', muted: '#98a0aa', accent: '#e0902f', danger: '#d1584a' };
+  var F = {
+    disp: "'Special Elite','Courier New',monospace",
+    body: "'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif",
+    mono: "'IBM Plex Mono',ui-monospace,Menlo,monospace"
+  };
+  function buildSheet() {
+    var fontsReady = Promise.race([
+      Promise.all([
+        document.fonts.load("40px 'Special Elite'"),
+        document.fonts.load("400 28px 'IBM Plex Sans'"),
+        document.fonts.load("500 22px 'IBM Plex Mono'")
+      ]),
+      new Promise(function (r) { setTimeout(r, 1500); })
+    ]).catch(function () {});
+    var imgReady = new Promise(function (resolve) {
+      if (!photo) return resolve(null);
+      var i = new Image();
+      i.onload = function () { resolve(i); };
+      i.onerror = function () { resolve(null); };
+      i.src = photo;
+    });
+    return Promise.all([fontsReady, imgReady]).then(function (res) {
+      var img = res[1];
+      var W = 1080, P = 64, IN = W - P * 2, H = 5200;
+      var cv = document.createElement('canvas');
+      cv.width = W; cv.height = H;
+      var c = cv.getContext('2d');
+      c.fillStyle = C.bg; c.fillRect(0, 0, W, H);
+      c.textBaseline = 'alphabetic';
+      var y = P;
+      var mono22 = '500 22px ' + F.mono;
+
+      function ls(n) { try { c.letterSpacing = n + 'px'; } catch (e) {} }
+      function text(s, x, yy, font, color, spacing, align) {
+        c.font = font; c.fillStyle = color; c.textAlign = align || 'left';
+        ls(spacing || 0); c.fillText(s, x, yy); ls(0); c.textAlign = 'left';
+      }
+      function chunks(word, maxW) {
+        var out = [], cur = '';
+        for (var i = 0; i < word.length; i++) {
+          if (c.measureText(cur + word[i]).width > maxW && cur) { out.push(cur); cur = word[i]; }
+          else cur += word[i];
+        }
+        if (cur) out.push(cur);
+        return out;
+      }
+      function wrap(s, font, maxW) {
+        c.font = font; ls(0);
+        var out = [];
+        String(s).split('\n').forEach(function (par) {
+          var words = par.split(/\s+/).filter(Boolean), line = '';
+          if (!words.length) { out.push(''); return; }
+          words.forEach(function (w) {
+            var parts = c.measureText(w).width > maxW ? chunks(w, maxW) : [w];
+            parts.forEach(function (p, idx) {
+              var test = line && idx === 0 ? line + ' ' + p : (idx > 0 ? '' : '') + p;
+              if (line && idx === 0 && c.measureText(line + ' ' + p).width <= maxW) { line = line + ' ' + p; }
+              else { if (line) out.push(line); line = p; }
+            });
+          });
+          out.push(line);
+        });
+        return out;
+      }
+      function section(title) {
+        y += 28; c.fillStyle = C.line; c.fillRect(P, y, IN, 2);
+        y += 46; text(title.toUpperCase(), P, y, mono22, C.muted, 4); y += 34;
+      }
+      function para(s, font, color, lh) {
+        var lines = wrap(s, font, IN);
+        lines.forEach(function (l, i) { text(l, P, y + Math.round(lh * 0.75) + i * lh, font, color); });
+        y += lines.length * lh;
+      }
+
+      /* cabeçalho */
+      text('FICHA DE CAÇADOR', P, y + 22, '500 24px ' + F.mono, C.accent, 6);
+      y += 100;
+      text('EVIL NATURE', P, y, '84px ' + F.disp, C.fg, 3);
+      y += 36;
+
+      /* identidade */
+      var top = y + 24, PW = 300, PH = 375;
+      c.fillStyle = C.surface; c.fillRect(P, top, PW, PH);
+      if (img) {
+        var r = Math.max(PW / img.width, PH / img.height), w = img.width * r, h = img.height * r;
+        c.save(); c.beginPath(); c.rect(P, top, PW, PH); c.clip();
+        c.drawImage(img, P + (PW - w) / 2, top + (PH - h) / 2, w, h);
+        c.restore();
+      } else {
+        text('SEM FOTO', P + PW / 2, top + PH / 2 + 8, '500 24px ' + F.mono, C.muted, 4, 'center');
+      }
+      c.strokeStyle = C.line; c.lineWidth = 2; c.strokeRect(P + 1, top + 1, PW - 2, PH - 2);
+      var rx = P + PW + 48, rw = W - P - rx;
+      text('NOME', rx, top + 22, mono22, C.muted, 4);
+      wrap(state.name || 'Sem nome', '56px ' + F.disp, rw).slice(0, 2).forEach(function (l, i) {
+        text(l, rx, top + 84 + i * 64, '56px ' + F.disp, state.name ? C.fg : C.muted);
+      });
+      text('JOGADOR(A)', rx, top + 212, mono22, C.muted, 4);
+      text(wrap(state.player || '—', '500 32px ' + F.body, rw)[0], rx, top + 254, '500 32px ' + F.body, state.player ? C.fg : C.muted);
+      text('DEFESA', rx, top + 312, mono22, C.muted, 4);
+      var def = String(12 + state.attrs.corpo);
+      text(def, rx, top + PH - 4, '96px ' + F.disp, C.accent);
+      c.font = '96px ' + F.disp;
+      var dw = c.measureText(def).width;
+      text('12 + Corpo ' + state.attrs.corpo, rx + dw + 20, top + PH - 8, '400 26px ' + F.mono, C.muted);
+      y = top + PH + 32;
+
+      /* atributos */
+      section('Atributos');
+      var gap = 24, bw = (IN - gap * 2) / 3, bh = 170;
+      ATTRS.forEach(function (a, i) {
+        var x = P + i * (bw + gap);
+        c.fillStyle = C.surface; c.fillRect(x, y, bw, bh);
+        c.strokeStyle = C.line; c.lineWidth = 2; c.strokeRect(x + 1, y + 1, bw - 2, bh - 2);
+        text(a.name.toUpperCase(), x + 24, y + 44, mono22, C.muted, 4);
+        text(String(state.attrs[a.id]), x + 24, y + bh - 26, '96px ' + F.disp, C.fg);
+      });
+      y += bh + 24;
+
+      /* perícias */
+      section('Perícias');
+      var colW = (IN - 48) / 2, rh = 56;
+      SKILLS.forEach(function (s, i) {
+        var col = i % 2, row = Math.floor(i / 2);
+        var x = P + col * (colW + 48), yy = y + row * rh, t = state.skills[s.id] || 0;
+        text(s.name, x, yy + 36, (t ? '500' : '400') + ' 30px ' + F.body, t ? C.fg : C.muted);
+        text(t ? '+' + t : '—', x + colW, yy + 36, '500 30px ' + F.mono, t === 3 ? C.accent : (t ? C.fg : C.muted), 0, 'right');
+        c.fillStyle = C.line; c.fillRect(x, yy + rh - 4, colW, 1);
+      });
+      y += 6 * rh + 16;
+
+      /* especialidade */
+      section('Especialidade');
+      var sp = SPECS.filter(function (s) { return s.id === state.spec; })[0];
+      if (sp) {
+        text(sp.name, P, y + 40, '46px ' + F.disp, C.accent); y += 56;
+        text(sp.tag.toUpperCase(), P, y + 22, '500 22px ' + F.mono, C.muted, 3); y += 40;
+        para(sp.text, '400 30px ' + F.body, C.fg, 44);
+      } else {
+        para('Não escolhida', '400 30px ' + F.body, C.muted, 44);
+      }
+
+      /* vínculos, medos */
+      section('Vínculos');
+      var bonds = state.bonds.filter(Boolean);
+      if (bonds.length) bonds.forEach(function (b) { para(b, '400 30px ' + F.body, C.fg, 44); y += 8; });
+      else para('—', '400 30px ' + F.body, C.muted, 44);
+      section('Medos e fraquezas');
+      para(state.fears || '—', '400 30px ' + F.body, state.fears ? C.fg : C.muted, 44);
+
+      /* equipamentos */
+      section('Equipamentos');
+      var s1 = state.slot1.type === 'fogo' ? 'ARMA DE FOGO' : state.slot1.type === 'branca' ? 'ARMA BRANCA ESPECIALIZADA' : 'ARMAMENTO PRINCIPAL';
+      [['SLOT 1 · ' + s1, state.slot1.desc], ['SLOT 2 · ITEM PESSOAL', state.slot2], ['SLOT 3 · ITEM DE PREPARAÇÃO', state.slot3]].forEach(function (p) {
+        text(p[0], P, y + 22, '500 20px ' + F.mono, C.muted, 3); y += 34;
+        para(p[1] || '—', '400 30px ' + F.body, p[1] ? C.fg : C.muted, 42);
+        y += 14;
+      });
+
+      /* condições */
+      section('Condições');
+      if (state.conditions.length) {
+        state.conditions.forEach(function (cn) { para('• ' + cn, '400 30px ' + F.body, C.fg, 42); });
+        if (state.conditions.length >= MAXCOND) {
+          y += 8; text('INCAPACITADO · PRECISA DE SOCORRO', P, y + 28, '500 26px ' + F.mono, C.danger, 2); y += 40;
+        }
+      } else {
+        para('Nenhuma', '400 30px ' + F.body, C.muted, 42);
+      }
+
+      /* rodapé */
+      y += 40;
+      text('EVIL NATURE · ' + new Date().toLocaleDateString('pt-BR'), P, y + 20, '400 20px ' + F.mono, C.muted, 2);
+      y += 20 + P;
+
+      var outH = Math.min(H, Math.ceil(y));
+      var out = document.createElement('canvas');
+      out.width = W; out.height = outH;
+      out.getContext('2d').drawImage(cv, 0, 0, W, outH, 0, 0, W, outH);
+      return out;
+    });
+  }
+  function slug(s) {
+    return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+  function updateExportUI() {
+    $('saveImgBtn').hidden = !(downloads && sheetBlob);
+  }
+  $('genBtn').addEventListener('click', function () {
+    var btn = $('genBtn');
+    btn.disabled = true; btn.textContent = 'Gerando…'; showMsg('');
+    buildSheet().then(function (canvas) {
+      $('sheetImg').src = canvas.toDataURL('image/png');
+      $('sheetOut').hidden = false;
+      canvas.toBlob(function (b) { sheetBlob = b; updateExportUI(); }, 'image/png');
+      showMsg('Imagem pronta.');
+      $('sheetOut').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }).catch(function () {
+      showMsg('Não consegui gerar a imagem neste navegador. Use o resumo em texto.');
+    }).then(function () {
+      btn.disabled = false; btn.textContent = 'Gerar imagem da ficha';
+    });
+  });
+  $('saveImgBtn').addEventListener('click', function () {
+    if (!downloads || !sheetBlob) return;
+    downloads.save({ filename: 'ficha-' + (slug(state.name) || 'cacador') + '.png', data: sheetBlob }).then(function () {
+      showMsg('Imagem enviada para salvar.');
+    }, function (e) {
+      if (e && e.code === 'declined') return;
+      showMsg('Não deu para salvar direto. Segure o dedo sobre a imagem e escolha salvar.');
+    });
+  });
+
+  /* nova ficha */
+  $('resetBtn').addEventListener('click', function () { $('resetConfirm').hidden = false; $('resetYes').focus(); });
+  $('resetNo').addEventListener('click', function () { $('resetConfirm').hidden = true; });
+  $('resetYes').addEventListener('click', function () {
+    state = blank(); photo = '';
+    ui.roll = null; ui.dmg = null;
+    try { localStorage.removeItem(KEY); localStorage.removeItem(PKEY); } catch (e) {}
+    $('resetConfirm').hidden = true;
+    $('sheetOut').hidden = true; $('sheetImg').removeAttribute('src'); sheetBlob = null;
+    $('summaryBox').hidden = true;
+    showMsg('Ficha nova em branco.');
+    fillFields(); renderAll(); save();
+  });
+
+  function renderAll() {
+    renderPhoto(); renderAttrs(); renderRollbar(); renderSkills();
+    renderSpecs(); renderEquip(); renderConds(); renderDamage(); showDamage();
+  }
+
+  bindFields();
+  renderAll();
+  setStatus();
+
+  try {
+    if (window.claude && window.claude.use) {
+      window.claude.use('downloads').then(function (dl) {
+        downloads = dl || null; updateExportUI();
+      }, function () {});
+    }
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

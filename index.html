@@ -213,6 +213,14 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
         </div>
       </div>
     </div>
+    <div>
+      <label class="lab" for="fPast">Idade e ocupação anterior</label>
+      <input type="text" id="fPast" autocomplete="off" maxlength="100" placeholder="Quem era antes de conhecer o sobrenatural">
+    </div>
+    <div>
+      <label class="lab" for="fMotive">Motivação (por que você caça?)</label>
+      <textarea id="fMotive" maxlength="300"></textarea>
+    </div>
   </section>
 
   <section aria-labelledby="h-attr">
@@ -248,6 +256,10 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
     <div>
       <label class="lab" for="fFears">Medos e fraquezas</label>
       <textarea id="fFears" maxlength="400" placeholder="Limitações humanas que enriquecem a interpretação"></textarea>
+    </div>
+    <div>
+      <label class="lab" for="fNotes">Anotações da missão</label>
+      <textarea id="fNotes" maxlength="600"></textarea>
     </div>
     <p class="hint">Combinem na mesa o que cada um aceita jogar, para ninguém passar por desconforto real.</p>
   </section>
@@ -351,7 +363,7 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
     { id: 'veterano', name: 'Veterano', tag: 'Instinto de Caçador',
       text: '1x por investigação, pode fazer uma pergunta direta ao Mestre sobre os hábitos ou o padrão de ataque da criatura, com base em sua experiência passada.' },
     { id: 'ocultista', name: 'Ocultista', tag: 'Conhecimento Proibido',
-      text: '1x por investigação, ao encontrar rituais ou objetos amaldiçoados, identifica sua origem ou propósito básico sem precisar rolar dados.' },
+      text: '1x por investigação, ao encontrar rituais ou objetos amaldiçoados, identifica sua origem ou propósito básico sem precisar rolar dados (rolagens entram para os próximos achados).' },
     { id: 'investigador', name: 'Investigador', tag: 'Ligando os Pontos',
       text: '1x por investigação, pode rolar o dado novamente se falhar ao examinar uma cena de crime ou interrogar uma testemunha.' },
     { id: 'sobrevivente', name: 'Sobrevivente', tag: 'Improviso Rápido',
@@ -404,7 +416,7 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
   /* estado */
   function blank() {
     return {
-      name: '', player: '',
+      name: '', player: '', past: '', motive: '', notes: '',
       attrs: { corpo: 0, mente: 0, presenca: 0 },
       skills: {}, spec: '',
       bonds: ['', ''], fears: '',
@@ -415,6 +427,7 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
   function merge(b, p) {
     if (!p || typeof p !== 'object') return b;
     b.name = str(p.name); b.player = str(p.player);
+    b.past = str(p.past); b.motive = str(p.motive); b.notes = str(p.notes);
     ATTRS.forEach(function (a) {
       var v = p.attrs ? Number(p.attrs[a.id]) : 0;
       b.attrs[a.id] = isFinite(v) ? Math.max(0, Math.min(MAXATTR, Math.round(v))) : 0;
@@ -505,6 +518,9 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
   var BINDS = [
     ['fName', function () { return state.name; }, function (v) { state.name = v; }],
     ['fPlayer', function () { return state.player; }, function (v) { state.player = v; }],
+    ['fPast', function () { return state.past; }, function (v) { state.past = v; }],
+    ['fMotive', function () { return state.motive; }, function (v) { state.motive = v; }],
+    ['fNotes', function () { return state.notes; }, function (v) { state.notes = v; }],
     ['fBond1', function () { return state.bonds[0]; }, function (v) { state.bonds[0] = v; }],
     ['fBond2', function () { return state.bonds[1]; }, function (v) { state.bonds[1] = v; }],
     ['fFears', function () { return state.fears; }, function (v) { state.fears = v; }],
@@ -773,6 +789,8 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
     L.push('EVIL NATURE · Ficha de caçador');
     L.push('Nome: ' + (state.name || '—'));
     L.push('Jogador(a): ' + (state.player || '—'));
+    L.push('Idade e ocupação anterior: ' + (state.past || '—'));
+    L.push('Motivação: ' + (state.motive || '—'));
     L.push('Corpo ' + a.corpo + ' · Mente ' + a.mente + ' · Presença ' + a.presenca + ' · Defesa ' + (12 + a.corpo));
     L.push('Perícias principais (+3): ' + (mains.join(', ') || '—'));
     L.push('Perícias básicas (+2): ' + (basics.join(', ') || '—'));
@@ -783,6 +801,7 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
     L.push('Item pessoal: ' + (state.slot2 || '—'));
     L.push('Item de preparação: ' + (state.slot3 || '—'));
     L.push('Condições: ' + (state.conditions.join(', ') || 'nenhuma') + (state.conditions.length >= MAXCOND ? ' (incapacitado)' : ''));
+    if (state.notes) L.push('Anotações da missão: ' + state.notes);
     return L.join('\n');
   }
   function showMsg(t) { $('exportMsg').textContent = t; }
@@ -902,13 +921,19 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
       });
       text('JOGADOR(A)', rx, top + 212, mono22, C.muted, 4);
       text(wrap(state.player || '—', '500 32px ' + F.body, rw)[0], rx, top + 254, '500 32px ' + F.body, state.player ? C.fg : C.muted);
-      text('DEFESA', rx, top + 312, mono22, C.muted, 4);
+      text('DEFESA', rx, top + 286, mono22, C.muted, 4);
       var def = String(12 + state.attrs.corpo);
-      text(def, rx, top + PH - 4, '96px ' + F.disp, C.accent);
-      c.font = '96px ' + F.disp;
+      text(def, rx, top + PH - 4, '80px ' + F.disp, C.accent);
+      c.font = '80px ' + F.disp;
       var dw = c.measureText(def).width;
       text('12 + Corpo ' + state.attrs.corpo, rx + dw + 20, top + PH - 8, '400 26px ' + F.mono, C.muted);
       y = top + PH + 32;
+
+      /* quem é */
+      section('Idade e ocupação anterior');
+      para(state.past || '—', '400 30px ' + F.body, state.past ? C.fg : C.muted, 44);
+      section('Motivação');
+      para(state.motive || '—', '400 30px ' + F.body, state.motive ? C.fg : C.muted, 44);
 
       /* atributos */
       section('Atributos');
@@ -952,6 +977,10 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
       else para('—', '400 30px ' + F.body, C.muted, 44);
       section('Medos e fraquezas');
       para(state.fears || '—', '400 30px ' + F.body, state.fears ? C.fg : C.muted, 44);
+      if (state.notes) {
+        section('Anotações da missão');
+        para(state.notes, '400 30px ' + F.body, C.fg, 44);
+      }
 
       /* equipamentos */
       section('Equipamentos');
